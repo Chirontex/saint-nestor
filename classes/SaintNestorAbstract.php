@@ -23,20 +23,26 @@ abstract class SaintNestorAbstract implements SaintNestorInterface
     public $logs_dir;
     public $log_name_format;
     public $logging_level;
-    public $levels_exp;
+    public $levels_names;
+    public $rigidity;
 
     const NOTICE = 0;
     const WARNING = 1;
     const ERROR = 2;
 
-    public function __construct(string $logs_dir)
+    public function __construct(string $logs_dir, bool $rigidity = true)
     {
 
         $this->logs_dir = $logs_dir;
+        $this->rigidity = $rigidity;
 
         if (!file_exists($this->logs_dir)) {
                 
-            if (!mkdir($this->logs_dir)) die('Failed to create directory '.$this->logs_dir.'.');
+            if (!mkdir($this->logs_dir)) {
+                
+                if ($this->rigidity) die('Failed to create directory '.$this->logs_dir.'.');
+            
+            }
         
         }
 
@@ -46,16 +52,45 @@ abstract class SaintNestorAbstract implements SaintNestorInterface
 
     }
 
-    public function write_log(string $message, int $level, string $custom_filename = '')
+    public function write_log(string $message, int $code, string $custom_filename = '')
     {
 
-        if (!isset($this->levels_exp[0])) $this->levels_exp[0] = 'NOTICE';
+        if ($code >= $this->logging_level) {
 
-        if (!isset($this->levels_exp[1])) $this->levels_exp[1] = 'WARNING';
+            $levels_names = $this->levels_names;
 
-        if (!isset($this->levels_exp[2])) $this->levels_exp[2] = 'ERROR';
+            if (!isset($levels_names[0])) $levels_names[0] = 'NOTICE';
 
-        
+            if (!isset($levels_names[1])) $levels_names[1] = 'WARNING';
+
+            if (!isset($levels_names[2])) $levels_names[2] = 'ERROR';
+
+            if (isset($levels_names[$code])) $codename = $levels_names[$code];
+            else {
+
+                if ($code > 2) $codename = 'ERROR';
+                elseif ($code < 0) $codename = 'NOTICE';
+
+            }
+
+            if (empty($custom_filename)) {
+
+                if (empty($this->log_name_format)) $log_filename = time().'.log';
+                else $log_filename = date($this->log_name_format).'.log';
+
+            } else $log_filename = $custom_filename;
+
+            $actual_message = date('Y-m-d H:i:s').' || '.$codename.': '.$message;
+
+            if (file_exists($this->logs_dir.$log_filename)) $log_content = file_get_contents($this->logs_dir.$log_filename).$actual_message;
+            else $log_content = $actual_message;
+
+            if (file_put_contents($this->logs_dir.$log_filename, $log_content)) $result = ['success' => true, 'message' => 'Log written successfully.'];
+            else $result = ['success' => false, 'Logging failed.'];
+
+        } else $result = ['success' => false, 'message' => 'Logging level is too high for this log.'];
+
+        return $result;
 
     }
 

@@ -20,6 +20,7 @@
 interface SaintNestorInterface
 {
 
-    public function __construct(string $logs_dir);
+    public function __construct(string $logs_dir, bool $rigidity = true);
+    public function write_log(string $message, int $code, string $custom_filename = '');
 
 }
