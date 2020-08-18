@@ -22,6 +22,12 @@ abstract class SaintNestorAbstract implements SaintNestorInterface
 
     public $logs_dir;
     public $log_name_format;
+    public $logging_level;
+    public $levels_exp;
+
+    const NOTICE = 0;
+    const WARNING = 1;
+    const ERROR = 2;
 
     public function __construct(string $logs_dir)
     {
@@ -35,6 +41,21 @@ abstract class SaintNestorAbstract implements SaintNestorInterface
         }
 
         $this->log_name_format = '';
+
+        $this->logging_level = 0;
+
+    }
+
+    public function write_log(string $message, int $level, string $custom_filename = '')
+    {
+
+        if (!isset($this->levels_exp[0])) $this->levels_exp[0] = 'NOTICE';
+
+        if (!isset($this->levels_exp[1])) $this->levels_exp[1] = 'WARNING';
+
+        if (!isset($this->levels_exp[2])) $this->levels_exp[2] = 'ERROR';
+
+        
 
     }
 
