@@ -82,7 +82,7 @@ abstract class SaintNestorAbstract implements SaintNestorInterface
 
             $actual_message = date('Y-m-d H:i:s').' || '.$codename.': '.$message;
 
-            if (file_exists($this->logs_dir.$log_filename)) $log_content = file_get_contents($this->logs_dir.$log_filename).$actual_message;
+            if (file_exists($this->logs_dir.$log_filename)) $log_content = file_get_contents($this->logs_dir.$log_filename)."\n".$actual_message;
             else $log_content = $actual_message;
 
             if (file_put_contents($this->logs_dir.$log_filename, $log_content)) $result = ['success' => true, 'message' => 'Log written successfully.'];

@@ -1,6 +1,6 @@
 <?php
 /**
- *    Saint Nestor ver. 0.9
+ *    Saint Nestor ver. 0.99
  *    
  *    Copyright (C) 2020  Dmitry Shumilin (dr.noisier@yandex.ru)
  *
