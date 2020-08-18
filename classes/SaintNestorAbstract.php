@@ -86,7 +86,12 @@ abstract class SaintNestorAbstract implements SaintNestorInterface
             else $log_content = $actual_message;
 
             if (file_put_contents($this->logs_dir.$log_filename, $log_content)) $result = ['success' => true, 'message' => 'Log written successfully.'];
-            else $result = ['success' => false, 'Logging failed.'];
+            else {
+
+                if ($this->rigidity) die($actual_message."\n".'Logging failed.');
+                else $result = ['success' => false, 'Logging failed.'];
+            
+            }
 
         } else $result = ['success' => false, 'message' => 'Logging level is too high for this log.'];
 
