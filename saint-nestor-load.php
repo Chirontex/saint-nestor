@@ -1,6 +1,6 @@
 <?php
 /**
- *    Saint Nestor ver. 1.0
+ *    Saint Nestor ver. 1.1
  *    
  *    Copyright (C) 2020  Dmitry Shumilin (dr.noisier@yandex.ru)
  *
@@ -17,9 +17,9 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-require_once __DIR__.'\\classes\\interface\\SaintNestorInterface.php';
+require_once __DIR__.'/classes/interface/SaintNestorInterface.php';
 
-require_once __DIR__.'\\classes\\SaintNestorAbstract.php';
-require_once __DIR__.'\\classes\\SaintNestor.php';
+require_once __DIR__.'/classes/SaintNestorAbstract.php';
+require_once __DIR__.'/classes/SaintNestor.php';
 
-$saint_nestor = new SaintNestor(__DIR__.'\\logs\\');
+$saint_nestor = new SaintNestor(__DIR__.'/logs/');

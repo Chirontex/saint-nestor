@@ -7,7 +7,7 @@
 1. Download and unpack **SaintNestor** last release into your project.
 2. Hook up the **saint-nestor-load.php** file:
 ```php
-require_once __DIR__.'\\saint-nestor-load.php';
+require_once __DIR__.'/saint-nestor-load.php';
 ```
 
 ## How to use
@@ -27,7 +27,7 @@ $saint_nestor->write_log('logging test', 0);
 * You can change the path of the logs folder.
 * Make sure this folder exists!
 */
-$saint_nestor->logs_dir = __DIR__.'\\logs_new';
+$saint_nestor->logs_dir = __DIR__.'/logs_new';
 /**
 * By default, the log filename is an actual UNIX-timestamp.
 * You can change it by defining the filename format like in date().
@@ -61,9 +61,9 @@ $saint_nestor->write_log('logging level test 2', 1); // and this will be not
 
 In the **saint-nestor-load.php** file you can change the logs folder at the initialization of a **SaintNestor** object. In this case, this folder will be created if it does not exist.
 ```php
-$saint_nestor = new SaintNestor(__DIR__.'\\logstwo');
+$saint_nestor = new SaintNestor(__DIR__.'/logstwo');
 ```
 *Rigidity* is a property that determines whether to stop the application by the die() or not if the log file was not created/updated. By default, **SaintNestor::rigidity** is true. You can change it at the initialization of an object.
 ```php
-$saint_nestor = new SaintNestor(__DIR__.'\\logs', false);
+$saint_nestor = new SaintNestor(__DIR__.'/logs', false);
 ```
