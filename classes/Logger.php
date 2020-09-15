@@ -30,20 +30,31 @@ class Logger implements LoggerInterface
     public function __construct(array $dir_parts, string $filename = "", string $file_extension = ".log", bool $separate_levels = false)
     {
         
+        // Этим свойством будет определяться, пишем ли мы логи в разные файлы
+        // в зависимости от уровня или нет. Просто запоминаем его значение.
         $this->separate_levels = $separate_levels;
         
+        // Убираем точку перед проверкой. Она нам не нужна.
         if (substr($file_extension, 0, 1) === '.') $file_extension = substr($file_extension, 1);
 
+        // Проверяем, что расширение файла состоит только из цифр и латинских букв.
         $file_ext_correct = StringHandler::checkStringSymbols($file_extension, array_merge(range('a', 'z'), range(0, 9)));
 
+        // Если проверка прошла, то записываем пользовательское расширение и
+        // возвращаем точку. Если же нет, то возвращаем дефолтное расширение.
         if ($file_ext_correct) $this->file_extension = '.'.$file_extension;
         else $this->file_extension = '.log';
 
+        // Инициализируем массив для проверки имени файла и частей пути директории.
         $check_names_arr = ['/', '\\', ':', '*', '?', '"', '<', '>', '|'];
 
-        if (StringHandler::checkStringSymbols($filename, $check_names_arr, false)) $this->filename = $filename;
+        // Проверяем корректность заданного имени файла, если таковое было задано.
+        // Если не было, либо было задано некорректное, то формируем дефолтное.
+        if (!empty($filename) && StringHandler::checkStringSymbols($filename, $check_names_arr, false)) $this->filename = $filename;
         else $this->filename = date("Y-m-d");
 
+        // Если первая часть пути задана как DIR, то воспринимаем это как призыв
+        // сформировать путь от __DIR__.
         if ($dir_parts[0] === 'DIR') {
             
             $this->directory = __DIR__.'/';
@@ -51,6 +62,10 @@ class Logger implements LoggerInterface
         
         } else $i = 0;
 
+        // Проверяем корректность частей пути директории.
+        // Если какая-то из частей оказывается некорректной, то завершаем
+        // формирование пути, останавливаясь на предыдущей части как на
+        // конечной директории.
         for ($i; $i < count($dir_parts); $i++) {
 
             if (StringHandler::checkStringSymbols($dir_parts[$i], $check_names_arr, false)) $this->directory .= $dir_parts[$i].'/';
@@ -58,6 +73,9 @@ class Logger implements LoggerInterface
 
         }
 
+        // Проверяем, существует ли нужная нам директории. Если нет, то
+        // пытаемся её создать. Если создать не получается,
+        // выбрасываем исключение.
         if (!file_exists($this->directory)) {
 
             if (!mkdir($this->directory)) throw new SaintNestorException('Saint Nestor: directory creation failure.', -99);

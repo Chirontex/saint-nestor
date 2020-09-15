@@ -19,19 +19,27 @@
  */
 namespace SaintNestor;
 
-class StringHandler
+class StringHandler implements StringHandlerInterface
 {
     public static function checkStringSymbols(string $string, array $symbols, bool $need_to_find = true)
     {
 
+        // Проверяем длину строки. Если была передана пустая строка,
+        // то возвращаем результат, обратный $need_to_find
         if (iconv_strlen($string) > 0) {
 
             $result = true;
 
             foreach ($symbols as $symbol) {
 
+                // В массиве может находиться что угодно.
+                // Всё принудительно приводим к строке.
                 $symbol = (string)$symbol;
-                
+
+                // По $need_to_find определяем, должны быть найдены
+                // символы из $symbols или нет.
+                // В случае (не)нахождения символа меняем результат на
+                // false и завершаем цикл.
                 if ($need_to_find) {
 
                     if (strpos($string, $symbol) === false) {
@@ -54,7 +62,7 @@ class StringHandler
 
             }
 
-        } else $result = !(true && $need_to_find);
+        } else $result = !$need_to_find;
 
         return $result;
 

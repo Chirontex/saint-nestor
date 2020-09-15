@@ -19,6 +19,9 @@
  */
 namespace SaintNestor;
 
+/**
+ * Describes log levels.
+ */
 class LogLevel
 {
 

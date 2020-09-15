@@ -20,6 +20,8 @@
 namespace SaintNestor;
 
 use Exception;
-
+/**
+ * A custom exception class.
+ */
 class SaintNestorException extends Exception
 {/*...*/}

@@ -21,7 +21,14 @@ namespace SaintNestor;
 
 interface StringHandlerInterface
 {
-
+    /**
+     * This method will help you, if you need to check a presence of some symbols in string.
+     * 
+     * @param string $string
+     * @param array $symbols
+     * @param bool $need_to_find
+     * @return bool
+     */
     public static function checkStringSymbols(string $string, array $symbols, bool $need_to_find = true);
-    
+
 }
