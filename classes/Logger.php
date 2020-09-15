@@ -22,6 +22,38 @@ namespace SaintNestor;
 class Logger implements LoggerInterface
 {
 
+    private $directory;
+    private $filename;
+    private $file_extension;
+    private $separate_levels;
+
+    public function __construct(array $dir_parts, string $filename = "", string $file_extension = ".log", bool $separate_levels = false)
+    {
+        
+        $this->separate_levels = $separate_levels;
+        
+        if (substr($file_extension, 0, 1) === '.') $file_extension = substr($file_extension, 1);
+
+        $file_ext_correct = StringHandler::checkStringSymbols($file_extension, array_merge(range('a', 'z'), range(0, 9)));
+
+        if ($file_ext_correct) $this->file_extension = '.'.$file_extension;
+        else $this->file_extension = '.log';
+
+        $check_names_arr = ['/', '\\', ':', '*', '?', '"', '<', '>', '|'];
+
+        if (StringHandler::checkStringSymbols($filename, $check_names_arr, false)) $this->filename = $filename;
+        else $this->filename = date("Y-m-d");
+
+        $this->directory = __DIR__;
+
+        foreach ($dir_parts as $part) {
+            
+
+
+        }
+
+    }
+
     public function emergency(string $message, array $context = [])
     {
         

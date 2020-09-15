@@ -22,6 +22,7 @@ namespace SaintNestor;
 interface LoggerInterface
 {
 
+    public function __construct(array $dir_parts, string $filename = "", string $file_extension = ".log", bool $separate_levels = false);
     public function emergency(string $message, array $context = []);
     public function alert(string $message, array $context = []);
     public function critical(string $message, array $context = []);

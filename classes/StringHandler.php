@@ -19,16 +19,44 @@
  */
 namespace SaintNestor;
 
-class LogLevel
+class StringHandler
 {
+    public static function checkStringSymbols(string $string, array $symbols, bool $need_to_find = true)
+    {
 
-    const EMERGENCY = 'emergency';
-    const ALERT = 'alert';
-    const CRITICAL = 'critical';
-    const ERROR = 'error';
-    const WARNING = 'warning';
-    const NOTICE = 'notice';
-    const INFO = 'info';
-    const DEBUG = 'debug';
+        if (iconv_strlen($string) > 0) {
 
+            $result = true;
+
+            foreach ($symbols as $symbol) {
+
+                $symbol = (string)$symbol;
+                
+                if ($need_to_find) {
+
+                    if (strpos($string, $symbol) === false) {
+
+                        $result = false;
+                        break;
+
+                    }
+
+                } else {
+
+                    if (strpos($string, $symbol) !== false) {
+
+                        $result = false;
+                        break;
+
+                    }
+
+                }
+
+            }
+
+        } else $result = !(true && $need_to_find);
+
+        return $result;
+
+    }
 }
