@@ -17,10 +17,18 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-require_once __DIR__.'/classes/interfaces/LoggerInterface.php';
-require_once __DIR__.'/classes/interfaces/StringHandlerInterface.php';
+spl_autoload_register(function($classname) {
 
-require_once __DIR__.'/classes/LogLevel.php';
-require_once __DIR__.'/classes/StringHandler.php';
-require_once __DIR__.'/classes/SaintNestorExpection.php';
-require_once __DIR__.'/classes/Logger.php';
+    if (strpos($classname, 'SaintNestor') !== false) {
+
+        $path = __DIR__.'/classes/';
+
+        if (strpos($classname, 'Interface') !== false) $path .= 'interfaces/';
+
+        $filename = substr($classname, strpos($classname, 'SaintNestor\\') + 12).'.php';
+
+        require_once $path.$filename;
+
+    }
+
+});

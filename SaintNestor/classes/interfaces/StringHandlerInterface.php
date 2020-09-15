@@ -22,7 +22,7 @@ namespace SaintNestor;
 interface StringHandlerInterface
 {
     /**
-     * This method will help you, if you need to check a presence of some symbols in string.
+     * This method will help you, if you need to check a presence of some symbols in a string.
      * 
      * @param string $string
      * @param array $symbols

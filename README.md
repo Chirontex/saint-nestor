@@ -9,5 +9,5 @@
 ```php
 use SaintNestor;
 
-require_once __DIR__.'/saint-nestor-load.php';
+require_once __DIR__.'/SaintNestor/autoload.php';
 ```
