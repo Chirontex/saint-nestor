@@ -45,12 +45,15 @@ class Logger implements LoggerInterface
         if ($file_ext_correct) $this->file_extension = '.'.$file_extension;
         else $this->file_extension = '.log';
 
-        // Инициализируем массив для проверки имени файла и частей пути директории.
-        $check_names_arr = ['/', '\\', ':', '*', '?', '"', '<', '>', '|'];
+        // Инициализируем массивы для проверки имени файла и частей пути директории.
+        $check_dirparts_arr = [':', '*', '?', '"', '<', '>', '|'];
+        $check_filename_arr = $check_dirparts_arr;
+        $check_filename_arr[] = '/';
+        $check_filename_arr[] = '\\';
 
         // Проверяем корректность заданного имени файла, если таковое было задано.
         // Если не было, либо было задано некорректное, то формируем дефолтное.
-        if (!empty($filename) && StringHandler::checkStringSymbols($filename, $check_names_arr, false)) $this->filename = $filename;
+        if (!empty($filename) && StringHandler::checkStringSymbols($filename, $check_filename_arr, false)) $this->filename = $filename;
         else $this->filename = date("Y-m-d");
 
         // Если первая часть пути задана как DIR, то воспринимаем это как призыв
@@ -68,8 +71,13 @@ class Logger implements LoggerInterface
         // конечной директории.
         for ($i; $i < count($dir_parts); $i++) {
 
-            if (StringHandler::checkStringSymbols($dir_parts[$i], $check_names_arr, false)) $this->directory .= $dir_parts[$i].'/';
-            else break;
+            if (StringHandler::checkStringSymbols($dir_parts[$i], $check_dirparts_arr, false)) {
+                
+                $this->directory .= $dir_parts[$i];
+
+                if (substr($dir_parts[$i], -1) !== '/') $this->directory .= '/';
+            
+            } else break;
 
         }
 
