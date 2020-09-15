@@ -44,11 +44,23 @@ class Logger implements LoggerInterface
         if (StringHandler::checkStringSymbols($filename, $check_names_arr, false)) $this->filename = $filename;
         else $this->filename = date("Y-m-d");
 
-        $this->directory = __DIR__;
-
-        foreach ($dir_parts as $part) {
+        if ($dir_parts[0] === 'DIR') {
             
+            $this->directory = __DIR__.'/';
+            $i = 1;
+        
+        } else $i = 0;
 
+        for ($i; $i < count($dir_parts); $i++) {
+
+            if (StringHandler::checkStringSymbols($dir_parts[$i], $check_names_arr, false)) $this->directory .= $dir_parts[$i].'/';
+            else break;
+
+        }
+
+        if (!file_exists($this->directory)) {
+
+            if (!mkdir($this->directory)) throw new SaintNestorException('Saint Nestor: directory creation failure.', -99);
 
         }
 

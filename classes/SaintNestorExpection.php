@@ -1,6 +1,6 @@
 <?php
 /**
- *    Saint Nestor ver. 2.0
+ *    Saint Nestor
  *    
  *    Copyright (C) 2020  Dmitry Shumilin (dr.noisier@yandex.ru)
  *
@@ -17,10 +17,9 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-require_once __DIR__.'/classes/interfaces/LoggerInterface.php';
-require_once __DIR__.'/classes/interfaces/StringHandlerInterface.php';
+namespace SaintNestor;
 
-require_once __DIR__.'/classes/LogLevel.php';
-require_once __DIR__.'/classes/StringHandler.php';
-require_once __DIR__.'/classes/SaintNestorExpection.php';
-require_once __DIR__.'/classes/Logger.php';
+use Exception;
+
+class SaintNestorException extends Exception
+{/*...*/}
