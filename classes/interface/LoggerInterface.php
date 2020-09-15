@@ -17,5 +17,19 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-class SaintNestor extends SaintNestorAbstract
-{/*...*/}
+namespace SaintNestor;
+
+interface LoggerInterface
+{
+
+    public function emergency(string $message, array $context = []);
+    public function alert(string $message, array $context = []);
+    public function critical(string $message, array $context = []);
+    public function error(string $message, array $context = []);
+    public function warning(string $message, array $context = []);
+    public function notice(string $message, array $context = []);
+    public function info(string $message, array $context = []);
+    public function debug(string $message, array $context = []);
+    public function log(int $level, string $message, array $context = []);
+
+}

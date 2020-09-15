@@ -17,10 +17,18 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-interface SaintNestorInterface
+namespace SaintNestor;
+
+final class LogLevel
 {
 
-    public function __construct(string $logs_dir, bool $rigidity = true);
-    public function write_log(string $message, int $code, string $custom_filename = '');
-
+    const EMERGENCY = 'emergency';
+    const ALERT = 'alert';
+    const CRITICAL = 'critical';
+    const ERROR = 'error';
+    const WARNING = 'warning';
+    const NOTICE = 'notice';
+    const INFO = 'info';
+    const DEBUG = 'debug';
+    
 }
