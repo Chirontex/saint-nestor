@@ -46,8 +46,10 @@ class Logger implements LoggerInterface
         else $this->file_extension = '.log';
 
         // Инициализируем массивы для проверки имени файла и частей пути директории.
-        $check_dirparts_arr = [':', '*', '?', '"', '<', '>', '|'];
+        $check_dirparts_arr = ['*', '?', '"', '<', '>', '|'];
         $check_filename_arr = $check_dirparts_arr;
+
+        $check_filename_arr[] = ':';
         $check_filename_arr[] = '/';
         $check_filename_arr[] = '\\';
 
@@ -86,7 +88,7 @@ class Logger implements LoggerInterface
         // выбрасываем исключение.
         if (!file_exists($this->directory)) {
 
-            if (!mkdir($this->directory)) throw new SaintNestorException('Saint Nestor: directory creation failure.', -99);
+            if (!mkdir($this->directory)) throw new SaintNestorException('Saint Nestor: "'.$this->directory.'" directory creation failure.', -99);
 
         }
 
