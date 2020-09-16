@@ -31,4 +31,13 @@ interface StringHandlerInterface
      */
     public static function checkStringSymbols(string $string, array $symbols, bool $need_to_find = true);
 
+    /**
+     * Method for interpolate context to message.
+     * 
+     * @param string $message
+     * @param array $context
+     * @return string
+     */
+    public static function interpolateContextToMessage(string $message, array $context);
+
 }

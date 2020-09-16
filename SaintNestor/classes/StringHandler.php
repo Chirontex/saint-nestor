@@ -67,4 +67,44 @@ class StringHandler implements StringHandlerInterface
         return $result;
 
     }
+
+    public static function interpolateContextToMessage(string $message, array $context)
+    {
+
+        // Генерируем массив символов, из которых должны состоять ключи контекста.
+        $check = array_merge(range('a', 'z'), range('A', 'Z'), range(0, 9));
+        $check[] = '_';
+        $check[] = '.';
+
+        // Отбираем элементы контекста, подходящие под требования:
+        // ключ должен состоять только из символов, содержащихся в $check,
+        // значение не должно быть списком, массивом или объектом, не имеющим
+        // метода __toString().
+        $replace = [];
+
+        foreach ($context as $key => $value) {
+            
+            // Записываем в результирующий массив замены подходящие под
+            // требования элементы контекста, добавляя к ключам фигурные
+            // скобки, приводя их таким образом к виду плейсхолдеров.
+            if (StringHandler::checkStringSymbols($key, $check)) {
+
+                if (!is_array($value) &&
+                    (!is_object($value) || method_exists($value, '__toString'))) $replace['{'.$key.'}'] = (string)$value;
+
+            }
+
+        }
+
+        // Заменяем плейсхолдеры в $message на контекст.
+        foreach ($replace as $key => $value) {
+            
+            $message = str_replace($key, $value, $message);
+
+        }
+
+        return $message;
+
+    }
+
 }
