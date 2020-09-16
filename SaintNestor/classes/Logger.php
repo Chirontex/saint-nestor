@@ -48,7 +48,6 @@ class Logger implements LoggerInterface
         // Инициализируем массивы для проверки имени файла и частей пути директории.
         $check_dirparts_arr = ['*', '?', '"', '<', '>', '|'];
         $check_filename_arr = $check_dirparts_arr;
-
         $check_filename_arr[] = ':';
         $check_filename_arr[] = '/';
         $check_filename_arr[] = '\\';
@@ -96,47 +95,52 @@ class Logger implements LoggerInterface
 
     public function emergency(string $message, array $context = [])
     {
-        
+        $this->log(0, $message, $context);
     }
 
     public function alert(string $message, array $context = [])
     {
-        
+        $this->log(1, $message, $context);
     }
 
     public function critical(string $message, array $context = [])
     {
-        
+        $this->log(2, $message, $context);
     }
 
     public function error(string $message, array $context = [])
     {
-        
+        $this->log(3, $message, $context);
     }
 
     public function warning(string $message, array $context = [])
     {
-        
+        $this->log(4, $message, $context);
     }
 
     public function notice(string $message, array $context = [])
     {
-        
+        $this->log(5, $message, $context);
     }
 
     public function info(string $message, array $context = [])
     {
-        
+        $this->log(6, $message, $context);
     }
 
     public function debug(string $message, array $context = [])
     {
-        
+        $this->log(7, $message, $context);
     }
 
     public function log(int $level, string $message, array $context = [])
     {
+
+        if ($level < 0) $level = 0;
+        elseif ($level > 7) $level = 7;
+
         
+
     }
 
 }
