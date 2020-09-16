@@ -95,51 +95,114 @@ class Logger implements LoggerInterface
 
     public function emergency(string $message, array $context = [])
     {
-        $this->log(0, $message, $context);
+        $this->log(7, $message, $context);
     }
 
     public function alert(string $message, array $context = [])
     {
-        $this->log(1, $message, $context);
+        $this->log(6, $message, $context);
     }
 
     public function critical(string $message, array $context = [])
     {
-        $this->log(2, $message, $context);
+        $this->log(5, $message, $context);
     }
 
     public function error(string $message, array $context = [])
     {
-        $this->log(3, $message, $context);
+        $this->log(4, $message, $context);
     }
 
     public function warning(string $message, array $context = [])
     {
-        $this->log(4, $message, $context);
+        $this->log(3, $message, $context);
     }
 
     public function notice(string $message, array $context = [])
     {
-        $this->log(5, $message, $context);
+        $this->log(2, $message, $context);
     }
 
     public function info(string $message, array $context = [])
     {
-        $this->log(6, $message, $context);
+        $this->log(1, $message, $context);
     }
 
     public function debug(string $message, array $context = [])
     {
-        $this->log(7, $message, $context);
+        $this->log(0, $message, $context);
     }
 
     public function log(int $level, string $message, array $context = [])
     {
 
+        // Минимальный уровень — 0, максимальный — 7.
+        // Если был указан уровень, лежащий за рамками диапазона от 0 до 7,
+        // то приводим его к ближайшему из диапазона.
         if ($level < 0) $level = 0;
         elseif ($level > 7) $level = 7;
 
+        // Определяем текстовое отображение уровня.
+        $level_text = '';
+
+        switch ($level) {
+            case 0:
+                $level_text = LogLevel::DEBUG;
+                break;
+
+            case 1:
+                $level_text = LogLevel::INFO;
+                break;
+
+            case 2:
+                $level_text = LogLevel::NOTICE;
+                break;
+
+            case 3:
+                $level_text = LogLevel::WARNING;
+                break;
+
+            case 4:
+                $level_text = LogLevel::ERROR;
+                break;
+
+            case 5:
+                $level_text = LogLevel::CRITICAL;
+                break;
+
+            case 6:
+                $level_text = LogLevel::ALERT;
+                break;
+
+            case 7:
+                $level_text = LogLevel::EMERGENCY;
+                break;
+        }
+
+        // Вставляем контекст в сообщение.
+        $message = StringHandler::interpolateContextToMessage($message, $context);
+
+        // Собираем имя файла.
+        // Если при создании объекта логгера было указано, что логирование
+        // должно быть разделено по уровням, то для каждого уровня создаётся
+        // отдельный файл, отличающийся от прочих именем своего уровня
+        // перед расширением.
+        $filename = $this->filename;
+
+        if ($this->separate_levels) $filename .= '_'.$level_text;
         
+        $filename .= $this->file_extension;
+
+        // Проверяем, существует ли файл с данным именем в указанной директории.
+        // Если существует, то запоминаем его содержимое.
+        if (file_exists($this->directory.$filename)) $content = file_get_contents($this->directory.$filename);
+        else $content = '';
+
+        // Добавляем отформатированное логируемое сообщение к контенту файла.
+        $content .= "\n".date("Y-m-d H:i:s").' || '.strtoupper($level_text).': '.$message;
+
+        // Записываем/перезаписываем файл.
+        file_put_contents($this->directory.$filename, $content);
 
     }
 
