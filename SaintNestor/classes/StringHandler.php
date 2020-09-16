@@ -76,30 +76,24 @@ class StringHandler implements StringHandlerInterface
         $check[] = '_';
         $check[] = '.';
 
-        // Отбираем элементы контекста, подходящие под требования:
-        // ключ должен состоять только из символов, содержащихся в $check,
+        // Проверяем ключ и значение каждого элемента контекста
+        // на соответствие требованиям:
+        // ключ должен состоять только из символов, содержащихся в $check;
         // значение не должно быть списком, массивом или объектом, не имеющим
-        // метода __toString().
-        $replace = [];
-
+        // метод __toString().
+        // Если элемент контекста удовлетворяет всем требованиям, то
+        // ставим его на место соответствующего плейсхолдера в $message.
         foreach ($context as $key => $value) {
             
-            // Записываем в результирующий массив замены подходящие под
-            // требования элементы контекста, добавляя к ключам фигурные
-            // скобки, приводя их таким образом к виду плейсхолдеров.
             if (StringHandler::checkStringSymbols($key, $check)) {
 
-                if (!is_array($value) &&
-                    (!is_object($value) || method_exists($value, '__toString'))) $replace['{'.$key.'}'] = (string)$value;
+                if (!is_array($value) && (!is_object($value) || method_exists($value, '__toString'))) {
+
+                    $message = str_replace('{'.$key.'}', (string)$value, $message);
+
+                }
 
             }
-
-        }
-
-        // Заменяем плейсхолдеры в $message на контекст.
-        foreach ($replace as $key => $value) {
-            
-            $message = str_replace($key, $value, $message);
 
         }
 
