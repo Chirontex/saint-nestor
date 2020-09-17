@@ -41,14 +41,20 @@ class StringHandler implements StringHandlerInterface
 
             $result = true;
 
+            // Дробим строку на массив символов для облегчения поиска по ней.
             $string_arr = str_split($string);
 
+            // Заранее все символы из аргумента приводим к строчному типу —
+            // опять же, для упрощения поиска.
             foreach ($symbols as $key => $symbol) {
                 
                 if (!is_string($symbol)) $symbols[$key] = (string)$symbol;
 
             }
 
+            // Производим проверку.
+            // Если нам попадается некорректный символ — прекращаем её и
+            // возвращаем false.
             foreach ($string_arr as $symbol) {
                 
                 if (array_search($symbol, $symbols) === false) {
@@ -71,8 +77,16 @@ class StringHandler implements StringHandlerInterface
 
         $result = true;
 
+        // Проверяем, что строка не пустая.
+        // В случае данного метода это для нас погоды не делает,
+        // на самом деле — если строка пустая, то по умолчанию считаем, что
+        // некорректных символов в ней нет, и возвращаем true.
+        // Однако идти дальше и даже просто пытаться производить какую-то
+        // более глубокую проверку здесь совершенно бессмысленно.
         if (iconv_strlen($string) > 0) {
 
+            // Если неприемлемый символ был найден, то сразу
+            // прекращаем проверку и возвращаем false.
             foreach ($symbols as $symbol) {
                     
                 $symbol = (string)$symbol;
