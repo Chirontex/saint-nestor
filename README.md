@@ -6,7 +6,7 @@
 
 ## Install
 
-1. Download and unpack **SaintNestor** last release into your project.
+1. Download and unpack **SaintNestor 2** last release into your project.
 2. Hook up the **autoload.php** file:
 ```php
 use SaintNestor\Logger;
