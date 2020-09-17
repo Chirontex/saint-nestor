@@ -96,7 +96,9 @@ interface LoggerInterface
     public function notice(string $message, array $context = []);
 
     /**
-     * Detailed debug information.
+     * Interesting events.
+     *
+     * Example: User logs in, SQL logs.
      *
      * @param string $message
      * @param array $context
