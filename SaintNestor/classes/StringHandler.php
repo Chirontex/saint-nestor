@@ -24,6 +24,7 @@ class StringHandler implements StringHandlerInterface
     public static function checkStringSymbols(string $string, array $symbols, bool $acceptable_to_find = true)
     {
 
+        // Да, это просто обёртка над двумя следующими методами.
         if ($acceptable_to_find) $result = StringHandler::checkAcceptableSymbols($string, $symbols);
         else $result = StringHandler::checkUnacceptableSymbols($string, $symbols);
 
@@ -34,17 +35,13 @@ class StringHandler implements StringHandlerInterface
     public static function checkAcceptableSymbols(string $string, array $symbols)
     {
 
+        // Проверяем, что строка не является пустой.
+        // Если является — возвращаем false, т.к. в проверке пустой строки нет смысла.
         if (iconv_strlen($string) > 0) {
 
             $result = true;
 
-            $string_arr = [];
-
-            for ($i = 0; $i < iconv_strlen($string, 'UTF-8'); $i++) {
-
-                $string_arr[] = substr($string, $i, 1);
-
-            }
+            $string_arr = str_split($string);
 
             foreach ($symbols as $key => $symbol) {
                 
@@ -102,6 +99,7 @@ class StringHandler implements StringHandlerInterface
         $check = array_merge(range('a', 'z'), range('A', 'Z'), range(0, 9));
         $check[] = '_';
         $check[] = '.';
+        $check[] = ' ';
 
         // Проверяем ключ и значение каждого элемента контекста
         // на соответствие требованиям:

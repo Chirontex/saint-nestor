@@ -32,6 +32,24 @@ interface StringHandlerInterface
     public static function checkStringSymbols(string $string, array $symbols, bool $acceptable_to_find = true);
 
     /**
+     * Method for checking that a string contains only acceptable symbols.
+     * 
+     * @param string $string
+     * @param array $symbols
+     * @return bool
+     */
+    public static function checkAcceptableSymbols(string $string, array $symbols);
+
+    /**
+     * Method for checking that a string is not contain unacceptable symbols.
+     * 
+     * @param string $string
+     * @param array $symbols
+     * @return bool
+     */
+    public static function checkUnacceptableSymbols(string $string, array $symbols);
+
+    /**
      * Method for interpolate context to message.
      * 
      * @param string $message
