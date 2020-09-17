@@ -1,6 +1,6 @@
 <?php
 /**
- *    Saint Nestor
+ *    Saint Nestor ver. 2.0
  *    
  *    Copyright (C) 2020  Dmitry Shumilin (dr.noisier@yandex.ru)
  *
@@ -195,11 +195,11 @@ class Logger implements LoggerInterface
 
         // Проверяем, существует ли файл с данным именем в указанной директории.
         // Если существует, то запоминаем его содержимое.
-        if (file_exists($this->directory.$filename)) $content = file_get_contents($this->directory.$filename);
+        if (file_exists($this->directory.$filename)) $content = file_get_contents($this->directory.$filename)."\n";
         else $content = '';
 
         // Добавляем отформатированное логируемое сообщение к контенту файла.
-        $content .= "\n".date("Y-m-d H:i:s").' || '.strtoupper($level_text).': '.$message;
+        $content .= date("Y-m-d H:i:s").' || '.strtoupper($level_text).': '.$message;
 
         // Записываем/перезаписываем файл.
         file_put_contents($this->directory.$filename, $content);

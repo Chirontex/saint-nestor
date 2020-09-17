@@ -26,10 +26,10 @@ interface StringHandlerInterface
      * 
      * @param string $string
      * @param array $symbols
-     * @param bool $need_to_find
+     * @param bool $acceptable_to_find
      * @return bool
      */
-    public static function checkStringSymbols(string $string, array $symbols, bool $need_to_find = true);
+    public static function checkStringSymbols(string $string, array $symbols, bool $acceptable_to_find = true);
 
     /**
      * Method for interpolate context to message.

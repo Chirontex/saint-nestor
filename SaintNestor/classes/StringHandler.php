@@ -21,48 +21,75 @@ namespace SaintNestor;
 
 class StringHandler implements StringHandlerInterface
 {
-    public static function checkStringSymbols(string $string, array $symbols, bool $need_to_find = true)
+    public static function checkStringSymbols(string $string, array $symbols, bool $acceptable_to_find = true)
     {
 
-        // Проверяем длину строки. Если была передана пустая строка,
-        // то возвращаем результат, обратный $need_to_find
+        if ($acceptable_to_find) $result = StringHandler::checkAcceptableSymbols($string, $symbols);
+        else $result = StringHandler::checkUnacceptableSymbols($string, $symbols);
+
+        return $result;
+
+    }
+
+    public static function checkAcceptableSymbols(string $string, array $symbols)
+    {
+
         if (iconv_strlen($string) > 0) {
 
             $result = true;
 
-            foreach ($symbols as $symbol) {
+            $string_arr = [];
 
-                // В массиве может находиться что угодно.
-                // Всё принудительно приводим к строке.
-                $symbol = (string)$symbol;
+            for ($i = 0; $i < iconv_strlen($string, 'UTF-8'); $i++) {
 
-                // По $need_to_find определяем, должны быть найдены
-                // символы из $symbols или нет.
-                // В случае (не)нахождения символа меняем результат на
-                // false и завершаем цикл.
-                if ($need_to_find) {
+                $string_arr[] = substr($string, $i, 1);
 
-                    if (strpos($string, $symbol) === false) {
+            }
 
-                        $result = false;
-                        break;
+            foreach ($symbols as $key => $symbol) {
+                
+                if (!is_string($symbol)) $symbols[$key] = (string)$symbol;
 
-                    }
+            }
 
-                } else {
+            foreach ($string_arr as $symbol) {
+                
+                if (array_search($symbol, $symbols) === false) {
 
-                    if (strpos($string, $symbol) !== false) {
-
-                        $result = false;
-                        break;
-
-                    }
+                    $result = false;
+                    break;
 
                 }
 
             }
 
-        } else $result = !$need_to_find;
+        } else $result = false;
+
+        return $result;
+
+    }
+
+    public static function checkUnacceptableSymbols(string $string, array $symbols)
+    {
+
+        $result = true;
+
+        if (iconv_strlen($string) > 0) {
+
+            foreach ($symbols as $symbol) {
+                    
+                $symbol = (string)$symbol;
+
+                if (strpos($string, $symbol) !== false) {
+
+                    $result = false;
+                    break;
+
+                }
+
+            }
+
+        }
 
         return $result;
 
@@ -85,7 +112,7 @@ class StringHandler implements StringHandlerInterface
         // ставим его на место соответствующего плейсхолдера в $message.
         foreach ($context as $key => $value) {
             
-            if (StringHandler::checkStringSymbols($key, $check)) {
+            if (StringHandler::checkStringSymbols((string)$key, $check)) {
 
                 if (!is_array($value) && (!is_object($value) || method_exists($value, '__toString'))) {
 
